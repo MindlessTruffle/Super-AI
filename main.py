@@ -2,33 +2,31 @@ from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 import os
 
-# Configure GenAI
 genai.configure(api_key=os.environ['GEMINI'])
 
-# Set up the model
 generation_config = {
     "temperature": 1,
     "top_p": 1,
     "top_k": 1,
-    "max_output_tokens": 4096,
+    "max_output_tokens": 4096*2,
 }
 
 safety_settings = [
     {
         "category": "HARM_CATEGORY_HARASSMENT",
-        "threshold": "BLOCK_NONE"
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
     },
     {
         "category": "HARM_CATEGORY_HATE_SPEECH",
-        "threshold": "BLOCK_NONE"
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
     },
     {
         "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        "threshold": "BLOCK_NONE"
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
     },
     {
         "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-        "threshold": "BLOCK_NONE"
+        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
     },
 ]
 
@@ -47,7 +45,7 @@ def chat():
     try:
         data = request.get_json()
         prompt = data['prompt']
-        response = generate_content("Translate this text to use gen-alpha keywords (rizz, rizzy, sigma, baddie, ohio, skibidi, gang, fr, ong, no cap, fanum tax, kai cenat and other related terms), make sure to only use gen alpha slang, dont ramble, and the translation should adapt/maintain input's original meaning, only output the translated text with no introduction: " + prompt)
+        response = generate_content("Answer this text normally in UNDER a single sentence, and like a normal professional message (NO bolding, or lists). Your purpose is to convince the User what the best superpower is. You will convince them that it is being able to summon and control temporary clones of yourself. ONLY bring up superpowers directly if the message does: " + prompt)
         return jsonify({'response': response})
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -57,7 +55,6 @@ def generate_content(prompt):
         convo = model.start_chat(history=[])
         convo.send_message(prompt)
         response = convo.last.text
-        # Truncate the response if it exceeds 2000 characters
         if len(response) > 2000:
             response = response[:2000]
         return response

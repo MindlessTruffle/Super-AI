@@ -1,208 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text-to-Brainrot Translator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f7f7f7; /* Light gray background */
-            animation: pulseBackground 10s infinite alternate; /* Background pulse animation */
-        }
-
-        @keyframes pulseBackground {
-            0% {
-                background-color: rgba(247, 247, 247, 1);
-            }
-            100% {
-                background-color: rgba(247, 247, 247, 0.9);
-            }
-        }
-
-        #chat-container {
-            width: 600px;
-            margin: 100px auto;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #ffffff; /* White background */
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
-            animation: slideIn 0.8s ease-out, pulseBoxShadow 10s infinite alternate; /* Slide-in animation and box shadow pulse */
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-100px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulseBoxShadow {
-            0% {
-                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-            }
-            100% {
-                box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
-            }
-        }
-
-        h1 {
-            font-family: 'Arial Black', sans-serif;
-            text-align: center;
-            color: #333333; /* Dark gray text color */
-            margin-bottom: 20px;
-            text-transform: uppercase; /* Uppercase heading text */
-            animation: fadeIn 1s ease-in; /* Fade-in animation */
-        }
-
-        h3 {
-            font-family: 'Arial Black', sans-serif;
-            text-align: center;
-            color: #333333; /* Dark gray text color */
-            margin-bottom: 10px;
-            text-transform: uppercase; /* Uppercase heading text */
-            animation: fadeIn 1s ease-in; /* Fade-in animation */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        #chat {
-            height: 300px;
-            overflow-y: scroll;
-            padding-right: 10px; /* Add a little padding to prevent content from shifting */
-        }
-
-        #chat p {
-            margin: 5px 0;
-            padding: 10px 15px;
-            border-radius: 5px;
-            background-color: #f2f2f2; /* Light gray message background */
-            border: 1px solid #e5e5e5; /* Light gray border */
-            animation: slideFromLeft 0.5s ease-out; /* Slide-in from left animation */
-        }
-
-        @keyframes slideFromLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        #user-input {
-            width: calc(100% - 80px); /* Adjusting input width */
-            padding: 10px;
-            border: 1px solid #cccccc; /* Light gray border */
-            border-radius: 5px;
-            margin-right: 10px;
-            transition: border-color 0.3s; /* Smooth border color transition */
-            animation: pulseBorder 2s infinite alternate; /* Pulse animation for input border */
-        }
-
-        @keyframes pulseBorder {
-            0% {
-                border-color: #cccccc;
-            }
-            100% {
-                border-color: #4CAF50;
-            }
-        }
-
-        #user-input:focus {
-            border-color: #4CAF50; /* Green border when input is focused */
-        }
-
-        #send-btn {
-            padding: 10px 20px;
-            cursor: pointer;
-            background-color: #4CAF50; /* Green button background */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s; /* Smooth background color transition */
-            animation: pulseButton 2s infinite alternate; /* Pulse animation for send button */
-        }
-
-        @keyframes pulseButton {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        #send-btn:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super AI Chat</title>
+  <link href="https://unpkg.com/tailwindcss@^2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #4e54c8, #8f94fb);
+      font-family: 'Roboto', sans-serif;
+    }
+    .chat-container {
+      height: 400px;
+      overflow-y: auto;
+    }
+    .message {
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
 </head>
-<body>
-    
-<h1>Text-to-Brainrot Translator</h1>
-<h3>Write anything boring, and watch it get improved!</h3>
-<div id="chat-container">
-    <div id="chat"></div>
-    <input type="text" id="user-input" placeholder="Type your message here...">
-    <button id="send-btn">Send</button>
-</div>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="container mx-auto px-4 py-8 bg-white shadow-lg rounded-lg max-w-lg"> 
+    <h1 class="text-4xl font-bold text-center mb-4 text-indigo-600">Super AI</h1>
+    <p class="text-lg text-center text-gray-700 mb-6">The AI that can convince you of <strong>The Best Superpower</strong></p>
+    <div id="chat-container" class="chat-container p-4 bg-gray-100 rounded-lg shadow-inner">
+    </div>
+    <div class="mt-4 flex">
+      <input type="text" id="user-input" class="flex-grow rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Type your message here (ex: What is the best superpower)...">
+      <button id="send-btn" class="ml-2 bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 focus:outline-none">Send</button>
+    </div>
+  </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const chat = document.getElementById('chat');
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
+  <script>
+    const chatContainer = document.getElementById('chat-container');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
-        sendBtn.addEventListener('click', function() {
-            const prompt = userInput.value.trim();
-            if (prompt !== '') {
-                userInput.value = '';
-                sendMessage(prompt);
-            }
-        });
-
-        function sendMessage(prompt) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/chat', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        const response = JSON.parse(xhr.responseText);
-                        appendMessage('User: ' + prompt);
-                        appendMessage('Rizzler: ' + response.response);
-                    } else {
-                        console.error('Error:', xhr.statusText);
-                    }
-                }
-            };
-            xhr.send(JSON.stringify({ prompt: prompt }));
-        }
-
-        function appendMessage(message) {
-            const p = document.createElement('p');
-            p.textContent = message;
-            chat.appendChild(p);
-        }
+    sendBtn.addEventListener('click', function() {
+      const prompt = userInput.value.trim();
+      if (prompt !== '') {
+        userInput.value = '';
+        appendMessage(prompt, 'user');
+        sendMessage(prompt);
+      }
     });
-</script>
+
+    userInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        sendBtn.click();
+      }
+    });
+
+    function sendMessage(prompt) {
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt: prompt })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.response) {
+          appendMessage(data.response, 'superai');
+        } else {
+          appendMessage('An error occurred.', 'superai');
+        }
+      })
+      .catch(error => {
+        appendMessage('An error occurred.', 'superai');
+      });
+    }
+
+    function appendMessage(message, sender) {
+      const messageBubble = document.createElement('div');
+      messageBubble.classList.add('message', 'max-w-xs', 'w-fit', 'my-2', 'px-4', 'py-2', 'rounded-lg', 'shadow-md');
+      if (sender === 'user') {
+        messageBubble.classList.add('bg-gray-200', 'self-end', 'text-left');
+        messageBubble.style.alignSelf = 'flex-end';
+      } else {
+        messageBubble.classList.add('bg-indigo-500', 'text-white', 'self-start', 'text-left');
+        messageBubble.style.alignSelf = 'flex-start';
+        messageBubble.style.borderRadius = '0.5rem 0.5rem 0.5rem 0.5rem';
+      }
+      messageBubble.textContent = message;
+      chatContainer.appendChild(messageBubble);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  </script>
 </body>
 </html>
