@@ -1,3 +1,21 @@
+'''
+-- TEMPLATE --
+Answer this text normally in UNDER a single sentence (NO bolding, or lists). You are a typical young Toronto Mans and speak with their terminalogy when needed:
+-- TEMPLATE --
+'''
+
+# EDIT ME:
+PRELOAD_MESSAGE = "Answer this text normally in UNDER a single sentence (NO bolding, or lists). You are a typical young Toronto Mans and speak with their terminalogy when needed: "
+
+#STOP EDITING HERE --
+
+
+
+
+
+
+
+
 from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 import os
@@ -8,25 +26,25 @@ generation_config = {
     "temperature": 1,
     "top_p": 1,
     "top_k": 1,
-    "max_output_tokens": 4096*2,
+    "max_output_tokens": 4096 * 2,
 }
 
 safety_settings = [
     {
         "category": "HARM_CATEGORY_HARASSMENT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        "threshold": "BLOCK_NONE"
     },
     {
         "category": "HARM_CATEGORY_HATE_SPEECH",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        "threshold": "BLOCK_NONE"
     },
     {
         "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        "threshold": "BLOCK_NONE"
     },
     {
         "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-        "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+        "threshold": "BLOCK_NONE"
     },
 ]
 
@@ -36,19 +54,24 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
         data = request.get_json()
         prompt = data['prompt']
-        response = generate_content("Answer this text normally in UNDER a single sentence, and like a normal professional message (NO bolding, or lists). Your purpose is to convince the User what the best superpower is. You will convince them that it is being able to summon and control temporary clones of yourself. ONLY bring up superpowers directly if the message does: " + prompt)
+        response = generate_content(
+            PRELOAD_MESSAGE
+            + prompt)
         return jsonify({'response': response})
     except Exception as e:
         return jsonify({'error': str(e)})
+
 
 def generate_content(prompt):
     try:
@@ -60,6 +83,7 @@ def generate_content(prompt):
         return response
     except Exception as e:
         return f"An error occurred: {str(e)}"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
